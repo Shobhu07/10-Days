@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (KBCounter <= 0)
         {
-            transform.position += new Vector3(x, 0f, 0f) * Movespeed * Time.deltaTime;
+            transform.position += new Vector3(horVal, 0f, 0f) * Movespeed * Time.deltaTime;
         }
 
         else

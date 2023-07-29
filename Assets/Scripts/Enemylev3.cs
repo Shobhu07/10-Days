@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-using UnityEditor.U2D.Path.GUIFramework;
 
 public class Enemylev3 : MonoBehaviour
 {
