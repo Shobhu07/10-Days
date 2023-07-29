@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
    public Animator animator;
     private Transform pTr;
     private Vector3 pStart;
-    private float horVal,horVal1;
+    private float horVal,horVal1, Movespeed= 2;
+
 
     [SerializeField]
     private float pMv = 1f;
@@ -26,6 +27,18 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject Gun;
     public GameObject GunUI;
+
+
+    [SerializeField]
+    private float KBForce;
+
+    [SerializeField]
+    private float KBCounter;
+
+    [SerializeField]
+    private float KBTotalTime;
+
+    private bool KnockFromRight;
     // Start is called before the first frame update
 
     private void Awake()
@@ -64,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector2(0, Pf), ForceMode2D.Impulse);
            
         }
-        if(Mathf.Abs(rb.velocity.y)>0)
+        if(Mathf.Abs(rb.velocity.y)>0&& Input.GetButtonDown("Jump"))
         {
           animator.SetBool("jump", true);
         }
@@ -81,6 +94,33 @@ public class PlayerMovement : MonoBehaviour
         horVal1 = Mathf.Abs(horVal);
          
         animator.SetFloat("run", horVal1);
+
+
+
+
+        if (KBCounter <= 0)
+        {
+            transform.position += new Vector3(x, 0f, 0f) * Movespeed * Time.deltaTime;
+        }
+
+        else
+        {
+            if (KnockFromRight == true)
+            {
+                rb.velocity = new Vector2(KBForce, KBForce);
+
+
+            }
+
+            if (KnockFromRight == false)
+            {
+                rb.velocity = new Vector2(-KBForce, KBForce);
+
+            }
+
+            KBCounter -= Time.deltaTime;
+        }
+       
     }
     public void TakeDamage(int damage)
     {
@@ -118,7 +158,22 @@ public class PlayerMovement : MonoBehaviour
         {
             TakeDamage(40);
         }
+           if (collision.gameObject.CompareTag("Traps"))
+           {
+            KBCounter = KBTotalTime;
 
+            if (collision.transform.position.x <= transform.position.x)
+            {
+                KnockFromRight = true;
+            }
+            if (collision.transform.position.x > transform.position.x)
+            {
+                KnockFromRight = false;
+            }
+            TakeDamage(20);
+
+           }
     }
+
   
 }
