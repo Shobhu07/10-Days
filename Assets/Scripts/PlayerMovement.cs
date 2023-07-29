@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+   public Animator animator;
     private Transform pTr;
     private Vector3 pStart;
-    private float horVal;
+    private float horVal,horVal1;
 
     [SerializeField]
     private float pMv = 1f;
@@ -39,11 +40,13 @@ public class PlayerMovement : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         Gun.gameObject.SetActive(false);
         GunUI.gameObject.SetActive(false);
+        animator = GetComponent<Animator>();    
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         horVal = Input.GetAxis("Horizontal");
         transform.position += Vector3.right * pMv * Time.deltaTime * horVal;
 
@@ -59,6 +62,15 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
         {
             rb.AddForce(new Vector2(0, Pf), ForceMode2D.Impulse);
+           
+        }
+        if(Mathf.Abs(rb.velocity.y)>0)
+        {
+          animator.SetBool("jump", true);
+        }
+        else
+        {
+            animator.SetBool("jump", false);
         }
 
         void flip()
@@ -66,7 +78,9 @@ public class PlayerMovement : MonoBehaviour
             iFr = !iFr;
             transform.Rotate(0f, 180f, 0f);
         }
-
+        horVal1 = Mathf.Abs(horVal);
+         
+        animator.SetFloat("run", horVal1);
     }
     public void TakeDamage(int damage)
     {
@@ -106,4 +120,5 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+  
 }
