@@ -140,4 +140,12 @@ public class EnemyChase : MonoBehaviour
 
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Obstacles"))
+        {
+            rb.AddForce(Vector2.up * 500f);
+        }
+    }
 }

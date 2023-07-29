@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
    public Animator animator;
     private Transform pTr;
     private Vector3 pStart;
-    private float horVal,horVal1, Movespeed= 2;
+    private SpriteRenderer sprite;
+    private float horVal,horVal1, Movespeed= 4;
 
 
     [SerializeField]
@@ -53,75 +54,75 @@ public class PlayerMovement : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         Gun.gameObject.SetActive(false);
         GunUI.gameObject.SetActive(false);
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        horVal = Input.GetAxis("Horizontal");
-        transform.position += Vector3.right * pMv * Time.deltaTime * horVal;
 
-        if (horVal < 0 && iFr)
-        {
-            flip();
-        }
-        else if (horVal > 0 && !iFr)
-        {
-            flip();
-        }
+        Movement();
+        Jump(); 
+        UpdateAnimationState();
 
-        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
-        {
-            rb.AddForce(new Vector2(0, Pf), ForceMode2D.Impulse);
-           
-        }
-        if(Mathf.Abs(rb.velocity.y)>0&& Input.GetButtonDown("Jump"))
-        {
-          animator.SetBool("jump", true);
-        }
-        else
-        {
-            animator.SetBool("jump", false);
-        }
-
-        void flip()
-        {
-            iFr = !iFr;
-            transform.Rotate(0f, 180f, 0f);
-        }
-        horVal1 = Mathf.Abs(horVal);
+      
          
-        animator.SetFloat("run", horVal1);
+        
 
 
 
 
-        if (KBCounter <= 0)
-        {
-            transform.position += new Vector3(horVal, 0f, 0f) * Movespeed * Time.deltaTime;
+       
+       
+    }
+
+    private void Movement()
+    {
+        
+        
+            horVal = Input.GetAxisRaw("Horizontal");
+
+
+            if (KBCounter <= 0)
+            {
+                transform.position += new Vector3(horVal, 0f, 0f) * Movespeed * Time.deltaTime;
+            }
+
+            else
+            {
+                if (KnockFromRight == true)
+                {
+                    rb.velocity = new Vector2(KBForce, KBForce);
+
+
+                }
+
+                if (KnockFromRight == false)
+                {
+                    rb.velocity = new Vector2(-KBForce, KBForce);
+
+                }
+
+                KBCounter -= Time.deltaTime;
+            }
+
+
         }
 
-        else
+    private void Jump()
+    {
+        // if (TutorialActive)
+        //{
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f) 
         {
-            if (KnockFromRight == true)
-            {
-                rb.velocity = new Vector2(KBForce, KBForce);
+            rb.AddForce(new Vector2(0f, Pf), ForceMode2D.Impulse);
 
 
-            }
-
-            if (KnockFromRight == false)
-            {
-                rb.velocity = new Vector2(-KBForce, KBForce);
-
-            }
-
-            KBCounter -= Time.deltaTime;
         }
        
     }
+
     public void TakeDamage(int damage)
     {
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
@@ -175,5 +176,37 @@ public class PlayerMovement : MonoBehaviour
            }
     }
 
-  
+    private void UpdateAnimationState()
+    {
+        if (horVal < 0f)
+        {
+            animator.SetBool("run", true);
+            sprite.flipX = true;
+        }
+
+        else if (horVal > 0f)
+        {
+            animator.SetBool("run", true);
+            sprite.flipX = false;
+        }
+        else
+        {
+            animator.SetBool("run", false);
+        }
+
+        if (rb.velocity.y > .1f)
+        {
+            animator.SetBool("jump", true);
+            animator.SetBool("run", false);
+        }
+
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("jump", false);
+        }
+
+
+    }
+
+
 }

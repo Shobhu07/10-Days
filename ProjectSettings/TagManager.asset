@@ -12,6 +12,7 @@ TagManager:
   - WPenemy
   - doorcolli
   - Traps
+  - Obstacles
   layers:
   - Default
   - TransparentFX
