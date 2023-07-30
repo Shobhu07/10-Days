@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Gun;
     public GameObject GunUI;
 
+    bool facingright = true;
+
 
     [SerializeField]
     private float KBForce;
@@ -65,6 +67,15 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Jump(); 
         UpdateAnimationState();
+
+        if (horVal > 0f && !facingright)
+        {
+            flip();
+        }
+        if (horVal < 0f && facingright)
+        {
+            flip();
+        }
 
       
          
@@ -181,20 +192,20 @@ public class PlayerMovement : MonoBehaviour
         if (horVal < 0f)
         {
             animator.SetBool("run", true);
-            sprite.flipX = true;
+
         }
 
         else if (horVal > 0f)
         {
             animator.SetBool("run", true);
-            sprite.flipX = false;
+           
         }
         else
         {
             animator.SetBool("run", false);
         }
 
-        if (rb.velocity.y > .1f)
+        if (rb.velocity.y > 0.1f)
         {
             animator.SetBool("jump", true);
             animator.SetBool("run", false);
@@ -203,9 +214,17 @@ public class PlayerMovement : MonoBehaviour
         if (rb.velocity.y == 0)
         {
             animator.SetBool("jump", false);
+
         }
 
 
+    }
+    void flip()
+    {
+        Vector3 currentscale = gameObject.transform.localScale;
+        currentscale.x *= -1;
+        gameObject.transform.localScale = currentscale;
+        facingright = !facingright;
     }
 
 
