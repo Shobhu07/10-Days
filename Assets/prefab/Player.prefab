@@ -136,6 +136,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13be11736767121438530b7b39bc6574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   pMv: 8
   Pf: 25
   iFr: 1
+  maxHealth: 40
+  healthBar: {fileID: 0}
+  Gun: {fileID: 0}
+  GunUI: {fileID: 0}
+  KBForce: 0
+  KBCounter: 0
+  KBTotalTime: 0
