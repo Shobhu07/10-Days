@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 pStart;
     private SpriteRenderer sprite;
     private float horVal,horVal1, Movespeed= 4;
+    [SerializeField]
+    private GameObject LevelClear;
 
 
     [SerializeField]
@@ -161,6 +163,11 @@ public class PlayerMovement : MonoBehaviour
             GunUI.gameObject.SetActive(true);
             Gun.gameObject.SetActive(true);
             Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.tag == "LevelClear")
+        {
+            LevelClear.SetActive(true);
         }
     }
 
