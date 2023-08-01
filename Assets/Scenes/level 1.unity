@@ -29169,7 +29169,7 @@ PrefabInstance:
       objectReference: {fileID: 243687829}
     - target: {fileID: 3994125741559751810, guid: 98ec33988a19b3744937bcb4b7857aaa, type: 3}
       propertyPath: attackCooldown
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3994125741559751810, guid: 98ec33988a19b3744937bcb4b7857aaa, type: 3}
       propertyPath: projectilePrefab
